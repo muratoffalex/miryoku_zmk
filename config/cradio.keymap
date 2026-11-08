@@ -4,3 +4,53 @@
 #include "../miryoku/custom_config.h"
 #include "../miryoku/mapping/34/ferris.h"
 #include "../miryoku/miryoku.dtsi"
+
+&kscan0 {
+    /delete-property/ wakeup-source;
+    input-gpios
+        = <&pro_micro 7 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        , <&pro_micro 18 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        , <&pro_micro 19 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        , <&pro_micro 20 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        , <&pro_micro 21 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        , <&pro_micro 15 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        , <&pro_micro 14 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        , <&pro_micro 16 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        , <&pro_micro 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        , <&pro_micro 1 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        , <&pro_micro 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        , <&pro_micro 3 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        , <&pro_micro 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        , <&pro_micro 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        , <&pro_micro 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+        ;
+};
+
+/ {
+    chosen {
+        zmk,kscan = &cradio_scan;
+    };
+
+    thumb_scan: thumb_scan {
+        compatible = "zmk,kscan-gpio-direct";
+        wakeup-source;
+        input-gpios = <&pro_micro 8 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
+                      <&pro_micro 9 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+    };
+
+    cradio_scan: cradio_scan {
+        compatible = "zmk,kscan-composite";
+        wakeup-source;
+        rows = <1>;
+        columns = <17>;
+
+        main {
+            kscan = <&kscan0>;
+        };
+
+        thumbs {
+            kscan = <&thumb_scan>;
+            col-offset = <15>;
+        };
+    };
+};
