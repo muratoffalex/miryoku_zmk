@@ -27,6 +27,46 @@
 };
 
 / {
+    combos {
+        compatible = "zmk,combos";
+
+        power_off {
+            bindings = <&soft_off>;
+            key-positions = <7 8 9>;
+            layers = <U_BASE U_EXTRA>;
+            timeout-ms = <50>;
+        };
+    };
+
+    soft_off_wakers {
+        compatible = "zmk,soft-off-wakeup-sources";
+        wakeup-sources = <&thumb_waker_8 &thumb_waker_9>;
+    };
+
+    wakeup_keys {
+        compatible = "gpio-keys";
+
+        thumb_key_8: thumb_key_8 {
+            gpios = <&pro_micro 8 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+        };
+
+        thumb_key_9: thumb_key_9 {
+            gpios = <&pro_micro 9 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+        };
+    };
+
+    thumb_waker_8: thumb_waker_8 {
+        compatible = "zmk,gpio-key-wakeup-trigger";
+        trigger = <&thumb_key_8>;
+        wakeup-source;
+    };
+
+    thumb_waker_9: thumb_waker_9 {
+        compatible = "zmk,gpio-key-wakeup-trigger";
+        trigger = <&thumb_key_9>;
+        wakeup-source;
+    };
+
     chosen {
         zmk,kscan = &cradio_scan;
     };
